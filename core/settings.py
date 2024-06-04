@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles', 
     'rest_framework',
     'rest_framework.authtoken',
+    'djoser',
     'rest_auth',
     'allauth', 
     'allauth.account', 
@@ -115,12 +116,18 @@ WSGI_APPLICATION = 'core.wsgi.application'
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',),
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10
 
+}
+
+SIMPLE_JWT = {
+   'AUTH_HEADER_TYPES': ('JWT',),
 }
 
 
