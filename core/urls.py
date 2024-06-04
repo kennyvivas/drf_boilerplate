@@ -16,17 +16,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,re_path,include
 # from allauth.account.views import confirm_email
+from rest_framework.routers import DefaultRouter
+from tasker.view.views import TaskViewSet
+
+
+router = DefaultRouter()
+router.register(r'tasks', TaskViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     re_path(r'^api/auth/', include('djoser.urls')),
     re_path(r'^api/auth/', include('djoser.urls.jwt')),
-    # re_path(r'^accounts/', include('allauth.urls')),
-    # re_path(r'^rest-auth/', include('rest_auth.urls')),
-    # re_path(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
     path('api/', include('rest_framework.urls')),
     re_path(r'^api/', include('users.urls')),
-
-    # re_path(r'^accounts/', include('allauth.urls')),
-    # re_path(r'^accounts-rest/registration/account-confirm-email/(?P<key>.+)/$', confirm_email, name='account_confirm_email'),
+    re_path(r'^api/', include(router.urls)),
 ]

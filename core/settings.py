@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',    
     'django.contrib.sites',
     'rest_auth.registration',
-    'users'
+    'users',
+    'tasker'
 ]
 
 MIDDLEWARE = [
