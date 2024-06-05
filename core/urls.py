@@ -30,4 +30,5 @@ urlpatterns = [
     path('api/', include('rest_framework.urls')),
     re_path(r'^api/', include('users.urls')),
     re_path(r'^api/', include(router.urls)),
+    re_path(r'^api/', include('tasker.urls')),
 ]
