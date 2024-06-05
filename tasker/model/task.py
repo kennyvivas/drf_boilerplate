@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models.signals import post_save
 from tasker.model.public_api import PublicApi
 from users.models import CustomUser as User
+from tasker.tasks.tasks import process_task
 
 class Task(models.Model):
     STATUS_CHOICES = [
@@ -25,8 +26,8 @@ class Task(models.Model):
 def task_post_save(sender, instance, created, *args, **kwargs):
     if created :
         print(f"task con id {instance.id} se acaba de crear")
+
+        process_task.delay(instance.id,instance.use_api.api_url)
         print(f"Aqui voy a ejecutar una tarea de celery que va a usar el servicio que esta definido en el modelo ")
-
-
 
 post_save.connect(task_post_save, sender=Task)

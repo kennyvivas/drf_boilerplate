@@ -10,3 +10,4 @@ media/*
 *.dump
 db.*
 .vscode/settings.json
+celerybeat-schedule

@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+import datetime
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +27,7 @@ SECRET_KEY = 'django-insecure-bnx544=dy2mc-8ya7l!($)%xb8d3mul+-t!m!g#o&9)0saja-q
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles', 
+    'django_celery_results',
     'rest_framework',
     'rest_framework.authtoken',
     'djoser',
@@ -64,6 +66,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'core.urls'
+
 
 # TEMPLATES = [
 #     {
@@ -109,9 +112,6 @@ TEMPLATES = [
     }, 
 ]
 
-
-
-
 WSGI_APPLICATION = 'core.wsgi.application'
 
 REST_FRAMEWORK = {
@@ -129,6 +129,8 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT = {
    'AUTH_HEADER_TYPES': ('JWT',),
+    'ACCESS_TOKEN_LIFETIME':  datetime.timedelta(hours=15),
+    'REFRESH_TOKEN_LIFETIME':  datetime.timedelta(days=1),
 }
 
 
@@ -157,17 +159,37 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # }
 
 
-DATABASES = {
+# DATABASES = {
 
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'break',
+#         'USER': 'postgres',
+#         'PASSWORD': 'elcaracol',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
+
+DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'break',
-        'USER': 'postgres',
-        'PASSWORD': 'elcaracol',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('POSTGRES_DB', 'myproject'),
+        'USER': os.getenv('POSTGRES_USER', 'myprojectuser'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'myprojectpassword'),
+        'HOST': 'db',
+        'PORT': 5432,
     }
 }
+
+# Celery Configuration
+CELERY_BROKER_URL = 'amqp://user:password@rabbitmq:5672//'
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
