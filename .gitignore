@@ -1,0 +1,13 @@
+version
+__pycache__
+*.pyc
+media/*
+*.sqlite*
+*.env
+*.pem
+*.rdb
+*.cpython-37.pyc
+*.dump
+db.*
+.vscode/settings.json
+celerybeat-schedule
